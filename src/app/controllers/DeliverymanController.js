@@ -28,7 +28,7 @@ class DeliverymanController {
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(401).json({ error: 'Validation Fail' });
+      return res.status(401).json({ error: 'validation Fail' });
     }
 
     const { name, email, avatar_id } = req.body;
@@ -38,7 +38,7 @@ class DeliverymanController {
     });
 
     if (emailExists) {
-      return res.status(401).json({ error: 'Email already exists' });
+      return res.status(401).json({ error: 'email already exists' });
     }
 
     const deliveryman = await Deliveryman.create({
@@ -60,7 +60,7 @@ class DeliverymanController {
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(401).json({ error: 'Validation Fail' });
+      return res.status(401).json({ error: 'validation Fail' });
     }
 
     const deliveryman = await Deliveryman.findByPk(req.params.id);
@@ -73,7 +73,7 @@ class DeliverymanController {
       });
 
       if (emailExists) {
-        return res.status(401).json({ error: 'Email already exists' });
+        return res.status(401).json({ error: 'email already exists' });
       }
     }
 
@@ -92,7 +92,7 @@ class DeliverymanController {
     const deliveryman = await Deliveryman.findByPk(id);
 
     if (!deliveryman) {
-      return res.json({ error: 'Deliveryman does not exists' });
+      return res.json({ error: 'deliveryman does not exists' });
     }
     const { name, email } = deliveryman;
 
