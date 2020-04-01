@@ -4,6 +4,8 @@ import Recipient from '../models/Recipient';
 import Deliveryman from '../models/Deliveryman';
 import Order from '../models/Order';
 
+import Mail from '../../lib/Mail';
+
 class OrderController {
   async index(req, res) {
     const order = await Order.findAll({
@@ -65,6 +67,12 @@ class OrderController {
       product,
     });
 
+    await Mail.sendMail({
+      to: `${deliverymanExists.name} <${deliverymanExists.email}>`,
+      subject: 'Encomenda Realizada',
+      text: 'Você tem uma nova encomenda!',
+    });
+
     return res.json(order);
   }
 
@@ -117,22 +125,17 @@ class OrderController {
   }
 
   async delete(req, res) {
-    const { id } = req.params;
-
-    const order = await Order.findByPk(id);
-
-    const { product } = order;
+    const order = await Order.findByPk(req.params.id);
 
     if (!order) {
       return res.status(401).json({ error: 'order does not exists' });
     }
 
-    await order.destroy();
+    order.canceled_at = new Date();
 
-    return res.json({
-      id,
-      product,
-    });
+    await order.save();
+
+    return res.json(order);
   }
 }
 
